@@ -1,8 +1,12 @@
-
+[cmdletBinding()]
 param(
 $Logname,
+
+[Parameter(Mandatory=$true)]
 $Computername,
+
 $EventId,
+
 $Newest
 
 )
