@@ -1,13 +1,13 @@
 [cmdletBinding()]
 param(
-$Logname,
+[string]$Logname = "Security",
 
 [Parameter(Mandatory=$true)]
-$Computername,
+[string]$Computername,
 
-$EventId,
+[int]$EventId = 4624,
 
-$Newest
+[int]$Newest = 5
 
 )
 
