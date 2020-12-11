@@ -1,0 +1,3 @@
+Skript.ps1 -Path <Pfad an den Ordner und Dateien erstellt werden sollen> -AnzahlOrdner <wie viele Ordner erstellt werden sollen> -AnzahlFiles <Wie viele Dateien pro Ordner erstellt werden sollen>
+
+-Skript Name und ParameterName darf frei definiert werden
