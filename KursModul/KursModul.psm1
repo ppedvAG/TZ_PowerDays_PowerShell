@@ -1,8 +1,24 @@
-﻿function New-TestFilesDir
+﻿<#
+.Synopsis
+   Dieses cmdlet erstellt TestFiles
+.DESCRIPTION
+   Mit diesem cmdlet können Sie an einem beliebigen Pfad eine TestFiles Struktur erstellen
+.EXAMPLE
+   New-TestFilesDir -Destinationpath C:\Testfiles
+
+   Diese cmdlet erstelltden Ordner C:\TestFiles wenn er nicht vorhanden ist. Und erzeugt innerhalb eine TestFilesSTruktur mit 4 Ordnern und jeweilig 9 Dateien.
+.EXAMPLE
+   Ein weiteres Beispiel für die Verwendung dieses Cmdlets
+.PARAMETER Destinationpath
+    Dieser Parameter ist ein Pflicht Parameter und setzt den Zielpfad fest.
+#>
+function New-TestFilesDir
 {
+
 [cmdletBinding()]
 Param(
     [ValidateScript({Test-Path -Path $PSItem -IsValid})]
+    [Parameter(Mandatory=$true)]
     [string]$Destinationpath,
 
     [ValidateRange(1,100)]
