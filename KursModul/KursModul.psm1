@@ -68,3 +68,39 @@ function New-TestFiles
     }
 
 }
+
+function Out-Voice
+{
+[cmdletBinding()]
+param(
+    
+    [Parameter(Mandatory=$true)]
+    [ValidateLength(1,100)]
+    [string]$inputtext
+)
+    $AudioService = Get-Service -Name Audiosrv
+    if($AudioService.Status -ne "Running")
+    {
+        $AudioService.Start()
+        $i = 0 #initialisieren der ZählerVariable
+        do
+        {
+            Start-Sleep -Seconds 1     #Pausieren der Skriptausführung um eine 1 Sekunde
+     
+            $i++ #erhöhen der Zählervariable 1 um den Wert 1
+            Write-Verbose -Message "Warte seit $i Sekunden auf den DienstStart" 
+            if($i -gt 15)
+            { #Wenn der Dienst 15 Sekunden lang nicht gestartet werden konnte wird ein Terminierender Fehler ausgegeben
+                throw -Message "Der Dienst konnte nicht gestartet werden"
+            }
+
+            $AudioService.Refresh() #aktualisieren des Status der Dienstinstanz innerhalb der Variable
+        }until($AudioService.Status -eq "Running")
+    }
+    
+    Add-Type -AssemblyName System.Speech   #laden der System.Speech Assembly aus dem .Net System
+    $SpeechSynthesizer = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer  #Initialisieren einer neuer Instanz des Speech Synthesizer
+    $SpeechSynthesizer.Rate = 0 #Setzen der Rate. Range -10 bis 10
+    #$SpeechSynthesizer.Speak($inputtext) #Ausgabe der Voice Ausgabe, Shell is blockiert während der Ausgabe
+    $SpeechSynthesizer.SpeakAsync($inputtext) #Ausgabe wir a Synchron ausgegeben in einem eigenen "Thread" sodass die Shell während der Ausgabe nicht blockiert wird    
+}
